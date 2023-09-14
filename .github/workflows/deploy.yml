@@ -34,7 +34,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Upload to AWS S3
-        working-directory: infra-s3
+        working-directory: ${{ github.workspace }}
         run: |
           bucket_name="infra-s3"
           object_name="main.zip"

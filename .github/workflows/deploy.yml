@@ -1,0 +1,44 @@
+name: Deploy to AWS S3
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Golang code
+        working-directory: infra-s3  # Set the working directory to your Golang code directory
+        run: |
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 && go build -o bootstrap main.go
+
+      - name: Zip Golang build files
+        working-directory: infra-s3  # Set the working directory to your Golang code directory
+        run: |
+          zip -r main.zip .
+
+      - name: Upload to AWS S3
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+        working-directory: infra-s3
+        run: |
+          bucket_name="infra-s3"
+          object_name="main.zip"
+      
+          # Check if the S3 bucket exists
+          if ! aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null; then
+          echo "S3 bucket '$bucket_name' does not exist, creating..."
+          aws s3api create-bucket --bucket "$bucket_name" --region us-west-1 --create-bucket-configuration LocationConstraint=us-west-1
+          fi
+      
+          # Upload the object to the S3 bucket
+          aws s3 cp "$object_name" "s3://$bucket_name/$object_name"

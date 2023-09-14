@@ -16,7 +16,7 @@ jobs:
       - name: Build Golang code
         working-directory: infra-s3  # Set the working directory to your Golang code directory
         run: |
-          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 && go build -o bootstrap main.go
+          ls -la
 
       - name: Zip Golang build files
         working-directory: infra-s3  # Set the working directory to your Golang code directory

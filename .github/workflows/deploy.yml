@@ -22,7 +22,7 @@ jobs:
           go build -o bootstrap main.go
 
       - name: Zip Golang build files
-        working-directory: ${{ github.workspace }}  # Set the working directory to your Golang code directory
+        working-directory: ${{ github.workspace }}
         run: |
           zip -r main.zip .
 
@@ -36,7 +36,7 @@ jobs:
       - name: Upload to AWS S3
         working-directory: ${{ github.workspace }}
         run: |
-          bucket_name="infra-s3"
+          bucket_name="infra-s3-tes123"
           object_name="main.zip"
       
           # Check if the S3 bucket exists

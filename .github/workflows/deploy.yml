@@ -14,12 +14,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Golang code
-        working-directory: infra-s3  # Set the working directory to your Golang code directory
+        working-directory: ${{ github.workspace }}  # Set the working directory to your Golang code directory
         run: |
-          ls -la
+          export GOOS=linux
+          export GOARCH=amd64
+          export CGO_ENABLED=0
+          go build -o bootstrap main.go
 
       - name: Zip Golang build files
-        working-directory: infra-s3  # Set the working directory to your Golang code directory
+        working-directory: ${{ github.workspace }}  # Set the working directory to your Golang code directory
         run: |
           zip -r main.zip .
 

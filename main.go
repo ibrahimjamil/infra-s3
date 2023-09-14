@@ -16,13 +16,11 @@ func main() {
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	log.Printf("hello world")
 
 	// Get the broker endpoint
 	brokerEndpointIP := os.Getenv("MQ_ENDPOINT_IP")
 	brokerUsername := os.Getenv("BROKER_USERNAME")
 	brokerPassword := os.Getenv("BROKER_PASSWORD")
-
 	brokerEndpointIP = strings.TrimPrefix(brokerEndpointIP, "stomp+ssl://")
 
 	// Create a tls dial and stomp connect to broker
@@ -41,6 +39,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	defer conn.Disconnect()
 
 	fmt.Print("connection established")
+
 	// Send a message to a queue on the broker
 	queueName := "Demo-Queue"
 	message := "Hello, Amazon MQ!"
@@ -62,13 +61,4 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		Body:       fmt.Sprintf("Message sent: %s", "ok"),
 	}
 	return response, nil
-}
-
-type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type ResponseBody struct {
-	Message string `json:"username"`
 }

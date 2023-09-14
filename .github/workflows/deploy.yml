@@ -24,20 +24,20 @@ jobs:
       - name: Zip Golang build files
         working-directory: ${{ github.workspace }}
         run: |
-          zip -r main.zip .
+          zip -r enode-webhook-v1.zip .
 
       - name: Upload to AWS S3
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-1 # Same with the lambda function region
+          aws-region: us-west-1                 # Same with the lambda function region
 
       - name: Upload to AWS S3
         working-directory: ${{ github.workspace }}
         run: |
-          bucket_name="infra-s3-tes123"
-          object_name="main.zip"
+          bucket_name="enode-webhook"
+          object_name="enode-webhook-v1.zip"
       
           # Check if the S3 bucket exists
           if ! aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null; then

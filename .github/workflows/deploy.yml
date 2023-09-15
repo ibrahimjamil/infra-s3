@@ -42,7 +42,11 @@ jobs:
           # Check if the S3 bucket exists
           if ! aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null; then
           echo "S3 bucket '$bucket_name' does not exist, creating..."
-          aws s3api create-bucket --bucket "$bucket_name" --region us-west-1 --create-bucket-configuration LocationConstraint=us-west-1
+          aws s3api create-bucket \
+            --bucket "$bucket_name" \
+            --region us-west-1 \
+            --create-bucket-configuration \
+            LocationConstraint=us-west-1
           fi
       
           # Upload the object to the S3 bucket
@@ -55,4 +59,7 @@ jobs:
           object_name="enode-webhook-v1.zip"
 
           # Update the Lambda function code with the latest version from S3
-          aws lambda update-function-code --function-name "$lambda_function_name" --s3-bucket "$bucket_name" --s3-key "$object_name"
+          aws lambda update-function-code \
+            --function-name "$lambda_function_name" \
+            --s3-bucket "$bucket_name" \
+            --s3-key "$object_name"

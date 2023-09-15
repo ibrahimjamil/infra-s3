@@ -54,8 +54,5 @@ jobs:
           bucket_name="enode-webhook"
           object_name="enode-webhook-v1.zip"
 
-          # Get the latest code package version from S3
-          latest_code_version=$(aws s3api list-object-versions --bucket "$bucket_name" --prefix "$object_name" --query "Versions[0].VersionId" --output text)
-
           # Update the Lambda function code with the latest version from S3
           aws lambda update-function-code --function-name "$lambda_function_name" --s3-bucket "$bucket_name" --s3-key "$object_name"

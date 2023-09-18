@@ -42,7 +42,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	// Send a message to a queue on the broker
 	queueName := "Demo-Queue"
-	message := "Hello, Amazon MQ!!!!"
+	message := "Hello, Amazon MQ"
 	err = conn.Send(
 		queueName,
 		"text/plain",
@@ -83,7 +83,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	response := events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       fmt.Sprintf("Message send: %s and recieved also %s", "done", messageBody),
+		Body:       fmt.Sprintf("Message senttt: %s and recieved also %s", "done", messageBody),
 	}
 	return response, nil
 }

@@ -83,7 +83,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	response := events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       fmt.Sprintf("Message senttt: %s and recieved also %s", "done", messageBody),
+		Body:       fmt.Sprintf("Message send: %s and recieved also %s", "done", messageBody),
 	}
 	return response, nil
 }

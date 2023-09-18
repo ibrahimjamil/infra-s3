@@ -42,7 +42,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	// Send a message to a queue on the broker
 	queueName := "Demo-Queue"
-	message := "Hello, Amazon MQ"
+	message := request.Body
 	err = conn.Send(
 		queueName,
 		"text/plain",

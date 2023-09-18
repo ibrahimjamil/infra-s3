@@ -56,10 +56,14 @@ jobs:
         id: lambda_check
         run: |
           lambda_function_name="enode_lambda_function"
-          aws lambda get-function --function-name "$lambda_function_name" >/dev/null 2>&1 || echo "FUNCTION_NOT_FOUND"
+          if aws lambda get-function --function-name "$lambda_function_name" >/dev/null 2>&1; then
+            echo "::set-output name=function_exists::true"
+          else
+            echo "::set-output name=function_exists::false"
+          fi
 
       - name: Update Lambda Function
-        if: steps.lambda_check.outputs.FUNCTION_NOT_FOUND != 'FUNCTION_NOT_FOUND'
+        if: steps.lambda_check.outputs.function_exists == 'true'
         run: |
           lambda_function_name="enode_lambda_function"
           bucket_name="enode-webhook"

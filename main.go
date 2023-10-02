@@ -3,12 +3,13 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/go-stomp/stomp/v3"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/go-stomp/stomp/v3"
 )
 
 func main() {
@@ -83,7 +84,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	response := events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       fmt.Sprintf("Message senttt: %s and recieved also %s", "done", messageBody),
+		Body:       fmt.Sprintf("Message sent: %s and recieved also %s", "done", messageBody),
 	}
 	return response, nil
 }

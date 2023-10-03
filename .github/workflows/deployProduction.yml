@@ -40,6 +40,26 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           zip -r enode-webhook-v1.zip .
+          
+      - name: Upload to AWS S3
+        working-directory: ${{ github.workspace }}
+        run: |
+          bucket_name="${{ env.BUCKET_NAME }}"
+          object_name="${{ env.BUCKET_OBJECT_NAME }}"
+          region="${{ env.AWS_REGION }}"
+          
+          # Check if the S3 bucket exists
+          if ! aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null; then
+          echo "S3 bucket '$bucket_name' does not exist, creating..."
+          aws s3api create-bucket \
+            --bucket "$bucket_name" \
+            --region "$region"\
+            --create-bucket-configuration \
+            LocationConstraint="$region"
+          fi
+          
+          # Upload the object to the S3 bucket
+          aws s3 cp "$object_name" "s3://$bucket_name/$object_name"
 
         # Lambda function exists check required as some times terraform resources may
         # be down at all so in that case we don't want to update that function

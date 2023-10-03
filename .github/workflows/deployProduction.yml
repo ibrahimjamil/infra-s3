@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     env:
       TF_WORKSPACE: ${{ vars.TF_WORKSPACE }}
@@ -40,7 +41,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           zip -r enode-webhook-v1.zip .
-          
+
       - name: Upload to AWS S3
         working-directory: ${{ github.workspace }}
         run: |

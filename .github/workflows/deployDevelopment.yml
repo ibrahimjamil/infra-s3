@@ -16,7 +16,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}-${{ vars.TF_WORKSPACE }}
-      LAMBDA_FUNCTION_NAME: ${{ vars.AWS_LAMBDA_FUNCTION }}
+      LAMBDA_FUNCTION_NAME: ${{ vars.AWS_LAMBDA_FUNCTION }}-${{ vars.TF_WORKSPACE }}
 
     steps:
       - name: Checkout code
@@ -51,12 +51,6 @@ jobs:
           # Check if the S3 bucket exists
           if ! aws s3api head-bucket --bucket "$bucket_name" 2>/dev/null; then
           echo "S3 bucket '$bucket_name' does not exist, creating..."
-          aws s3api create-bucket \
-            --bucket "$bucket_name" \
-            --region "$region"\
-            --create-bucket-configuration \
-            LocationConstraint="$region"
-          fi
           
           # Upload the object to the S3 bucket
           aws s3 cp enode-webhook-v1.zip "s3://$bucket_name/$object_name"
